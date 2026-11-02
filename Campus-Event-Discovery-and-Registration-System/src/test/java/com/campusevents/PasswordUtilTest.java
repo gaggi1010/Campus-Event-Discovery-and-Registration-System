@@ -1,0 +1,1 @@
+package com.campusevents;import com.campusevents.util.PasswordUtil;import org.junit.jupiter.api.Test;import static org.junit.jupiter.api.Assertions.*;class PasswordUtilTest{@Test void verifiesPassword(){String h=PasswordUtil.hash("StrongPassword1");assertTrue(PasswordUtil.verify("StrongPassword1",h));assertFalse(PasswordUtil.verify("wrong",h));}}

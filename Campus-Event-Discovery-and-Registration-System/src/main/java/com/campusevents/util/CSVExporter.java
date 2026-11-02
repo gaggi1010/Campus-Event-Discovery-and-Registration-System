@@ -1,0 +1,3 @@
+package com.campusevents.util;
+import java.nio.file.*;import java.nio.charset.StandardCharsets;import java.io.*;import java.util.*;
+public final class CSVExporter { private CSVExporter(){} public static void write(Path path,String[] header,List<String[]> rows)throws IOException { try(BufferedWriter w=Files.newBufferedWriter(path,StandardCharsets.UTF_8)){row(w,header);for(String[] r:rows)row(w,r);} } private static void row(BufferedWriter w,String[] a)throws IOException { for(int i=0;i<a.length;i++){if(i>0)w.write(',');String v=a[i]==null?"":a[i];w.write("\""+v.replace("\"","\"\"")+"\"");}w.newLine();} }

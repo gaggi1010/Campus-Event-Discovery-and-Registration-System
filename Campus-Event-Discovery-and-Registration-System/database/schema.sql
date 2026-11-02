@@ -1,0 +1,9 @@
+PRAGMA foreign_keys=ON;
+CREATE TABLE users(user_id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,email TEXT NOT NULL UNIQUE COLLATE NOCASE,password_hash TEXT NOT NULL,role TEXT NOT NULL CHECK(role IN ('STUDENT','ADMIN')));
+CREATE TABLE students(student_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER NOT NULL UNIQUE REFERENCES users(user_id) ON DELETE CASCADE,college_id TEXT NOT NULL UNIQUE,department TEXT NOT NULL,academic_year INTEGER NOT NULL CHECK(academic_year BETWEEN 1 AND 6),phone TEXT NOT NULL);
+CREATE TABLE admins(admin_id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER NOT NULL UNIQUE REFERENCES users(user_id) ON DELETE CASCADE,admin_role TEXT DEFAULT 'ADMIN');
+CREATE TABLE organizers(organizer_id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,email TEXT NOT NULL UNIQUE,phone TEXT);
+CREATE TABLE categories(category_id INTEGER PRIMARY KEY AUTOINCREMENT,category_name TEXT NOT NULL UNIQUE);
+CREATE TABLE events(event_id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT NOT NULL,description TEXT NOT NULL,category_id INTEGER NOT NULL REFERENCES categories(category_id),organizer_id INTEGER NOT NULL REFERENCES organizers(organizer_id),event_date TEXT NOT NULL,start_time TEXT NOT NULL,end_time TEXT NOT NULL,venue TEXT NOT NULL,registration_deadline TEXT NOT NULL,capacity INTEGER NOT NULL CHECK(capacity>0),status TEXT NOT NULL CHECK(status IN ('UPCOMING','ONGOING','COMPLETED','CANCELLED')));
+CREATE TABLE registrations(registration_id TEXT PRIMARY KEY,student_id INTEGER NOT NULL REFERENCES students(student_id),event_id INTEGER NOT NULL REFERENCES events(event_id),registration_date TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,status TEXT NOT NULL CHECK(status IN ('CONFIRMED','CANCELLED','WAITLISTED')),UNIQUE(student_id,event_id));
+CREATE INDEX idx_events_date ON events(event_date); CREATE INDEX idx_reg_event ON registrations(event_id);

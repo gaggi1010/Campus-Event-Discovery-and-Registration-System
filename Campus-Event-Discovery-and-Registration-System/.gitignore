@@ -1,0 +1,12 @@
+target/
+data/
+*.db
+*.db-shm
+*.db-wal
+.idea/
+.vscode/
+*.iml
+.env
+config.properties
+.DS_Store
+Thumbs.db
